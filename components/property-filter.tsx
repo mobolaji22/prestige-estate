@@ -1,39 +1,51 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState, useEffect } from "react" // Added useEffect
-import { Search, SlidersHorizontal, ChevronLeft, ChevronRight } from "lucide-react" // Added ChevronLeft, ChevronRight
+import { useState, useEffect } from "react";
+import {
+  Search,
+  SlidersHorizontal,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Slider } from "@/components/ui/slider"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import PropertyCard from "./property-card"
-import { Property } from "@/lib/mock-data"; // Added import
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import PropertyCard from "./property-card";
+import { Property } from "@/lib/mock-data";
 
-interface PropertyFilterProps { // Added interface for props
+interface PropertyFilterProps {
   allProperties: Property[];
 }
 
-const ITEMS_PER_PAGE = 6; // Define items per page
+const ITEMS_PER_PAGE = 6; // items per page
 
-export function PropertyFilter({ allProperties = [] }: PropertyFilterProps) { // Destructure allProperties from props and add default value
-  const [isAdvancedOpen, setIsAdvancedOpen] = useState(false)
+export function PropertyFilter({ allProperties = [] }: PropertyFilterProps) {
+  const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
   const [filters, setFilters] = useState({
-    location: "", // This will store the search term
+    location: "",
     minPrice: 0,
     maxPrice: 10000000,
     bedrooms: "",
     bathrooms: "",
     propertyType: "",
     hasVirtualTour: false,
-  })
-  const [filteredProperties, setFilteredProperties] = useState<Property[]>(allProperties) // Initialize with allProperties
-  const [hasSearched, setHasSearched] = useState(false)
-  const [currentPage, setCurrentPage] = useState(1); // State for current page
+  });
+  const [filteredProperties, setFilteredProperties] =
+    useState<Property[]>(allProperties);
+  const [hasSearched, setHasSearched] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     // Reset to all properties if filters are cleared or component mounts
@@ -43,98 +55,120 @@ export function PropertyFilter({ allProperties = [] }: PropertyFilterProps) { //
     setCurrentPage(1); // Reset page when allProperties or hasSearched changes
   }, [allProperties, hasSearched]);
 
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setFilters({
       ...filters,
       [name]: value,
-    })
-  }
+    });
+  };
 
   const handleSelectChange = (name: string, value: string) => {
     setFilters({
       ...filters,
       [name]: value,
-    })
-  }
+    });
+  };
 
   const handlePriceChange = (value: number[]) => {
     setFilters({
       ...filters,
       minPrice: value[0],
       maxPrice: value[1],
-    })
-  }
+    });
+  };
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.target
+    const { name, checked } = e.target;
     setFilters({
       ...filters,
       [name]: checked,
-    })
-  }
+    });
+  };
 
   const handleSearch = () => {
-    const results = allProperties.filter((property) => { // Use allProperties prop
+    const results = allProperties.filter((property) => {
       const searchTerm = filters.location.toLowerCase();
-      
+
       // Filter by location (locationName, neighborhood, or address)
       if (filters.location) {
-        const inLocationName = property.locationName && property.locationName.toLowerCase().includes(searchTerm);
-        const inNeighborhood = property.details.neighborhood && property.details.neighborhood.toLowerCase().includes(searchTerm);
-        const inAddress = property.address && property.address.toLowerCase().includes(searchTerm);
-        
+        const inLocationName =
+          property.locationName &&
+          property.locationName.toLowerCase().includes(searchTerm);
+        const inNeighborhood =
+          property.details.neighborhood &&
+          property.details.neighborhood.toLowerCase().includes(searchTerm);
+        const inAddress =
+          property.address &&
+          property.address.toLowerCase().includes(searchTerm);
+
         if (!inLocationName && !inNeighborhood && !inAddress) {
           return false;
         }
       }
 
       // Filter by price
-      if (property.priceValue < filters.minPrice || property.priceValue > filters.maxPrice) {
-        return false
+      if (
+        property.priceValue < filters.minPrice ||
+        property.priceValue > filters.maxPrice
+      ) {
+        return false;
       }
 
       // Filter by bedrooms
-      if (filters.bedrooms && property.bedrooms < Number.parseInt(filters.bedrooms)) {
-        return false
+      if (
+        filters.bedrooms &&
+        property.bedrooms < Number.parseInt(filters.bedrooms)
+      ) {
+        return false;
       }
 
       // Filter by bathrooms
-      if (filters.bathrooms && property.bathrooms < Number.parseInt(filters.bathrooms)) {
-        return false
+      if (
+        filters.bathrooms &&
+        property.bathrooms < Number.parseInt(filters.bathrooms)
+      ) {
+        return false;
       }
 
       // Filter by property type
-      if (filters.propertyType && filters.propertyType !== "any" && property.details.propertyType !== filters.propertyType) {
-        return false
+      if (
+        filters.propertyType &&
+        filters.propertyType !== "any" &&
+        property.details.propertyType !== filters.propertyType
+      ) {
+        return false;
       }
 
       // Filter by virtual tour
       if (filters.hasVirtualTour && !property.hasVirtualTour) {
-        return false
+        return false;
       }
 
-      return true
-    })
+      return true;
+    });
 
-    setFilteredProperties(results)
-    setHasSearched(true)
-    setCurrentPage(1); // Reset to first page on new search
-  }
+    setFilteredProperties(results);
+    setHasSearched(true);
+    setCurrentPage(1);
+    // Close filter after search
+    if (isAdvancedOpen === true) {
+      setIsAdvancedOpen(false);
+    }
+  };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       handleSearch();
     }
   };
 
   const formatPrice = (price: number) => {
     if (price >= 1000000) {
-      return `$${(price / 1000000).toFixed(1)}M`
+      return `$${(price / 1000000).toFixed(1)}M`;
     }
-    return `$${(price / 1000).toFixed(0)}K`
-  }
+    return `$${(price / 1000).toFixed(0)}K`;
+  };
 
   // Pagination Logic
   const dataSource = hasSearched ? filteredProperties : allProperties;
@@ -145,19 +179,17 @@ export function PropertyFilter({ allProperties = [] }: PropertyFilterProps) { //
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
-    // Optional: Scroll to top of results when page changes
-    const resultsElement = document.getElementById('property-results');
+    const resultsElement = document.getElementById("property-results");
     if (resultsElement) {
-      // resultsElement.scrollIntoView({ behavior: 'smooth' }); // Alternative
-      window.scrollTo({ top: resultsElement.offsetTop - 80, behavior: 'smooth' }); // Adjust offset if you have a sticky header
+      window.scrollTo({
+        top: resultsElement.offsetTop - 80,
+        behavior: "smooth",
+      });
     }
   };
 
-
   const renderPageNumbers = () => {
     const pageNumbers = [];
-    // Logic to display a manageable number of page buttons, e.g., with ellipses
-    // For simplicity, showing all page numbers if not too many, or a limited set
     const maxPagesToShow = 5; // Max page buttons to show directly
     let startPage, endPage;
 
@@ -191,8 +223,7 @@ export function PropertyFilter({ allProperties = [] }: PropertyFilterProps) { //
           variant={currentPage === i ? "default" : "outline"}
           size="icon"
           onClick={() => handlePageChange(i)}
-          className="h-9 w-9"
-        >
+          className="h-9 w-9">
           {i}
         </Button>
       );
@@ -200,38 +231,42 @@ export function PropertyFilter({ allProperties = [] }: PropertyFilterProps) { //
 
     // Add ellipses if needed
     if (startPage > 1) {
-      pageNumbers.unshift(<span key="start-ellipsis" className="px-2">...</span>);
       pageNumbers.unshift(
-         <Button
+        <span key="start-ellipsis" className="px-2">
+          ...
+        </span>
+      );
+      pageNumbers.unshift(
+        <Button
           key={1}
           variant={currentPage === 1 ? "default" : "outline"}
           size="icon"
           onClick={() => handlePageChange(1)}
-          className="h-9 w-9"
-        >
+          className="h-9 w-9">
           1
         </Button>
       );
     }
     if (endPage < totalPages) {
-      pageNumbers.push(<span key="end-ellipsis" className="px-2">...</span>);
+      pageNumbers.push(
+        <span key="end-ellipsis" className="px-2">
+          ...
+        </span>
+      );
       pageNumbers.push(
         <Button
           key={totalPages}
           variant={currentPage === totalPages ? "default" : "outline"}
           size="icon"
           onClick={() => handlePageChange(totalPages)}
-          className="h-9 w-9"
-        >
+          className="h-9 w-9">
           {totalPages}
         </Button>
       );
     }
 
-
     return pageNumbers;
   };
-
 
   return (
     <div className="space-y-8">
@@ -246,15 +281,14 @@ export function PropertyFilter({ allProperties = [] }: PropertyFilterProps) { //
                 className="pl-10"
                 value={filters.location}
                 onChange={handleInputChange}
-                onKeyDown={handleKeyPress} // Add this line
+                onKeyDown={handleKeyPress}
               />
             </div>
             <div className="flex gap-2">
               <Button
                 variant="outline"
                 className="flex items-center gap-2"
-                onClick={() => setIsAdvancedOpen(!isAdvancedOpen)}
-              >
+                onClick={() => setIsAdvancedOpen(!isAdvancedOpen)}>
                 <SlidersHorizontal className="h-4 w-4" />
                 Filters
               </Button>
@@ -282,7 +316,11 @@ export function PropertyFilter({ allProperties = [] }: PropertyFilterProps) { //
 
               <div className="space-y-2">
                 <Label>Bedrooms</Label>
-                <Select value={filters.bedrooms} onValueChange={(value) => handleSelectChange("bedrooms", value)}>
+                <Select
+                  value={filters.bedrooms}
+                  onValueChange={(value) =>
+                    handleSelectChange("bedrooms", value)
+                  }>
                   <SelectTrigger>
                     <SelectValue placeholder="Any" />
                   </SelectTrigger>
@@ -299,7 +337,11 @@ export function PropertyFilter({ allProperties = [] }: PropertyFilterProps) { //
 
               <div className="space-y-2">
                 <Label>Bathrooms</Label>
-                <Select value={filters.bathrooms} onValueChange={(value) => handleSelectChange("bathrooms", value)}>
+                <Select
+                  value={filters.bathrooms}
+                  onValueChange={(value) =>
+                    handleSelectChange("bathrooms", value)
+                  }>
                   <SelectTrigger>
                     <SelectValue placeholder="Any" />
                   </SelectTrigger>
@@ -319,14 +361,17 @@ export function PropertyFilter({ allProperties = [] }: PropertyFilterProps) { //
                   <Label>Property Type</Label>
                   <Select
                     value={filters.propertyType}
-                    onValueChange={(value) => handleSelectChange("propertyType", value)}
-                  >
+                    onValueChange={(value) =>
+                      handleSelectChange("propertyType", value)
+                    }>
                     <SelectTrigger>
                       <SelectValue placeholder="Any" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="any">Any</SelectItem>
-                      <SelectItem value="Single Family">Single Family</SelectItem>
+                      <SelectItem value="Single Family">
+                        Single Family
+                      </SelectItem>
                       <SelectItem value="Condominium">Condominium</SelectItem>
                       <SelectItem value="Townhouse">Townhouse</SelectItem>
                       <SelectItem value="Loft">Loft</SelectItem>
@@ -344,7 +389,9 @@ export function PropertyFilter({ allProperties = [] }: PropertyFilterProps) { //
                     onChange={handleCheckboxChange}
                     className="h-4 w-4 rounded border-neutral-300 text-neutral-900 focus:ring-neutral-500"
                   />
-                  <Label htmlFor="hasVirtualTour" className="text-sm font-normal">
+                  <Label
+                    htmlFor="hasVirtualTour"
+                    className="text-sm font-normal">
                     Has 3D Virtual Tour
                   </Label>
                 </div>
@@ -364,7 +411,9 @@ export function PropertyFilter({ allProperties = [] }: PropertyFilterProps) { //
       )}
 
       {currentItems.length > 0 && (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3" id="property-results">
+        <div
+          className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+          id="property-results">
           {currentItems.map((property) => (
             <PropertyCard key={property.id} {...property} />
           ))}
@@ -379,23 +428,23 @@ export function PropertyFilter({ allProperties = [] }: PropertyFilterProps) { //
             onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
             disabled={currentPage === 1}
             aria-label="Previous page"
-            className="h-9 w-9"
-          >
+            className="h-9 w-9">
             <ChevronLeft className="h-4 w-4" />
           </Button>
           {renderPageNumbers()}
           <Button
             variant="outline"
             size="icon"
-            onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+            onClick={() =>
+              handlePageChange(Math.min(totalPages, currentPage + 1))
+            }
             disabled={currentPage === totalPages}
             aria-label="Next page"
-            className="h-9 w-9"
-          >
+            className="h-9 w-9">
             <ChevronRight className="h-4 w-4" />
           </Button>
         </div>
       )}
     </div>
-  )
+  );
 }

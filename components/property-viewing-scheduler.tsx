@@ -1,21 +1,32 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { Calendar, Clock, User, Mail, Phone, Check } from "lucide-react"
+import { useState } from "react";
+import { Calendar, Clock, User, Mail, Phone, Check } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { generateAvailableDates, type AvailableDate, type TimeSlot } from "@/lib/mock-data"
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  generateAvailableDates,
+  type AvailableDate,
+  type TimeSlot,
+} from "@/lib/mock-data";
 
 interface PropertyViewingSchedulerProps {
-  propertyId: string
-  propertyTitle: string
-  propertyAddress: string
+  propertyId: string;
+  propertyTitle: string;
+  propertyAddress: string;
 }
 
 export function PropertyViewingScheduler({
@@ -23,52 +34,58 @@ export function PropertyViewingScheduler({
   propertyTitle,
   propertyAddress,
 }: PropertyViewingSchedulerProps) {
-  const [step, setStep] = useState(1)
-  const [selectedDate, setSelectedDate] = useState<AvailableDate | null>(null)
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState<TimeSlot | null>(null)
+  const [step, setStep] = useState(1);
+  const [selectedDate, setSelectedDate] = useState<AvailableDate | null>(null);
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState<TimeSlot | null>(
+    null
+  );
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     message: `I would like to schedule a viewing for ${propertyTitle} at ${propertyAddress}.`,
-  })
+  });
 
   // Generate available dates
-  const availableDates = generateAvailableDates()
+  const availableDates = generateAvailableDates();
 
   const handleDateSelect = (date: AvailableDate) => {
-    setSelectedDate(date)
-    setSelectedTimeSlot(null) // Reset time slot when date changes
-  }
+    setSelectedDate(date);
+    setSelectedTimeSlot(null); // Reset time slot when date changes
+  };
 
   const handleTimeSelect = (slot: TimeSlot) => {
-    setSelectedTimeSlot(slot)
-  }
+    setSelectedTimeSlot(slot);
+  };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleNextStep = () => {
-    setStep((prev) => prev + 1)
-  }
+    setStep((prev) => prev + 1);
+  };
 
   const handlePrevStep = () => {
-    setStep((prev) => prev - 1)
-  }
+    setStep((prev) => prev - 1);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     // In a real app, this would submit the data to an API
-    handleNextStep()
-  }
+    handleNextStep();
+  };
 
   return (
     <Card className="w-full">
       <CardHeader>
         <CardTitle>Schedule a Viewing</CardTitle>
-        <CardDescription>Select a date and time to view this property in person</CardDescription>
+        <CardDescription>
+          Select a date and time to view this property in person
+        </CardDescription>
       </CardHeader>
 
       <CardContent>
@@ -76,17 +93,22 @@ export function PropertyViewingScheduler({
           <div className="space-y-4">
             <div>
               <Label className="mb-2 block">Select a Date</Label>
-              <div className="grid grid-cols-7 gap-2">
+              <div className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-2">
                 {availableDates.map((date) => (
                   <Button
                     key={date.date}
                     type="button"
-                    variant={selectedDate?.date === date.date ? "default" : "outline"}
+                    variant={
+                      selectedDate?.date === date.date ? "default" : "outline"
+                    }
                     className="flex h-auto flex-col p-2"
-                    onClick={() => handleDateSelect(date)}
-                  >
-                    <span className="text-xs font-normal">{date.dayOfWeek}</span>
-                    <span className="text-sm font-medium">{date.formattedDate}</span>
+                    onClick={() => handleDateSelect(date)}>
+                    <span className="text-xs font-normal">
+                      {date.dayOfWeek}
+                    </span>
+                    <span className="text-sm font-medium">
+                      {date.formattedDate}
+                    </span>
                   </Button>
                 ))}
               </div>
@@ -95,16 +117,17 @@ export function PropertyViewingScheduler({
             {selectedDate && (
               <div>
                 <Label className="mb-2 block">Select a Time</Label>
-                <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5">
+                <div className="grid grid-cols-3 gap-2 md:grid-cols-4">
                   {selectedDate.slots.map((slot) => (
                     <Button
                       key={slot.id}
                       type="button"
-                      variant={selectedTimeSlot?.id === slot.id ? "default" : "outline"}
+                      variant={
+                        selectedTimeSlot?.id === slot.id ? "default" : "outline"
+                      }
                       disabled={!slot.available}
                       className={`${!slot.available ? "opacity-50" : ""}`}
-                      onClick={() => handleTimeSelect(slot)}
-                    >
+                      onClick={() => handleTimeSelect(slot)}>
                       {slot.time}
                     </Button>
                   ))}
@@ -200,11 +223,12 @@ export function PropertyViewingScheduler({
             </div>
             <h3 className="text-xl font-semibold">Viewing Scheduled!</h3>
             <p className="mt-2 text-neutral-600">
-              Your viewing has been scheduled for {selectedDate?.dayOfWeek}, {selectedDate?.formattedDate} at{" "}
-              {selectedTimeSlot?.time}.
+              Your viewing has been scheduled for {selectedDate?.dayOfWeek},{" "}
+              {selectedDate?.formattedDate} at {selectedTimeSlot?.time}.
             </p>
             <p className="mt-4 text-sm text-neutral-500">
-              We've sent a confirmation to {formData.email}. The agent will contact you shortly to confirm the details.
+              We've sent a confirmation to {formData.email}. The agent will
+              contact you shortly to confirm the details.
             </p>
           </div>
         )}
@@ -222,8 +246,7 @@ export function PropertyViewingScheduler({
             type="button"
             onClick={handleNextStep}
             disabled={!selectedDate || !selectedTimeSlot}
-            className="ml-auto"
-          >
+            className="ml-auto">
             Continue
           </Button>
         )}
@@ -241,5 +264,5 @@ export function PropertyViewingScheduler({
         )}
       </CardFooter>
     </Card>
-  )
+  );
 }

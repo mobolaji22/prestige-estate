@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, MapPin, Star } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import TestimonialCard from "@/components/testimonial-card";
 import { FeaturedProperties } from "@/components/featured-properties";
@@ -39,29 +38,29 @@ export default function Home() {
             </Link>
             <nav className="hidden md:flex md:gap-6 lg:gap-10">
               <Link
-                href="#properties"
+                href="/#properties"
                 className="text-sm font-medium transition-colors hover:text-neutral-500 smooth-scroll">
                 Featured
               </Link>
               <Link
-                href="#about"
+                href="/#about"
                 className="text-sm font-medium transition-colors hover:text-neutral-500 smooth-scroll">
                 About
               </Link>
               <Link
-                href="#testimonials"
+                href="/#testimonials"
                 className="text-sm font-medium transition-colors hover:text-neutral-500 smooth-scroll">
                 Testimonials
               </Link>
               <Link
-                href="#contact"
+                href="/#contact"
                 className="text-sm font-medium transition-colors hover:text-neutral-500 smooth-scroll">
                 Contact
               </Link>
             </nav>
             <div className="flex items-center gap-4">
               <Button asChild className="hidden md:block">
-                <Link href="#contact">Book a Consultation</Link>
+                <Link href="/#contact">Book a Consultation</Link>
               </Button>
               <button
                 className="block md:hidden"
@@ -111,30 +110,32 @@ export default function Home() {
           </div>
           <nav className="mt-8 flex flex-col space-y-4">
             <Link
-              href="#properties"
-              className="text-lg font-medium transition-colors hover:text-neutral-500 smooth-scroll">
+              href="/#properties"
+              className="text-lg font-medium transition-colors hover:text-neutral-500">
               Featured
             </Link>
             <Link
-              href="#about"
-              className="text-lg font-medium transition-colors hover:text-neutral-500 smooth-scroll">
+              href="/#about"
+              className="text-lg font-medium transition-colors hover:text-neutral-500">
               About
             </Link>
             <Link
-              href="#testimonials"
-              className="text-lg font-medium transition-colors hover:text-neutral-500 smooth-scroll">
+              href="/#testimonials"
+              className="text-lg font-medium transition-colors hover:text-neutral-500">
               Testimonials
             </Link>
             <Link
-              href="#contact"
-              className="text-lg font-medium transition-colors hover:text-neutral-500 smooth-scroll">
+              href="/#contact"
+              className="text-lg font-medium transition-colors hover:text-neutral-500">
               Contact
             </Link>
+            {/* <Button asChild className="hidden md:block"> */}
             <Link
-              href="#contact"
+              href="/#contact"
               className="text-lg font-medium transition-colors hover:text-neutral-500">
               Book a Consultation
             </Link>
+            {/* </Button> */}
           </nav>
         </div>
 

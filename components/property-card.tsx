@@ -1,26 +1,26 @@
-"use client"
+"use client";
 
-import { useState, useRef } from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { Bath, Bed, ChevronLeft, ChevronRight, Expand, MapPin, ArrowRight, Maximize2 } from "lucide-react"
+import { useState, useRef } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { Bath, Bed, Expand, MapPin, ArrowRight, Maximize2 } from "lucide-react";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 
 interface PropertyCardProps {
-  id: string
-  title: string
-  address: string
-  price: string
-  bedrooms: number
-  bathrooms: number
-  squareFeet: number
-  images: string[]
-  featured?: boolean
-  hasVirtualTour?: boolean
-  className?: string
+  id: string;
+  title: string;
+  address: string;
+  price: string;
+  bedrooms: number;
+  bathrooms: number;
+  squareFeet: number;
+  images: string[];
+  featured?: boolean;
+  hasVirtualTour?: boolean;
+  className?: string;
 }
 
 export default function PropertyCard({
@@ -36,62 +36,61 @@ export default function PropertyCard({
   hasVirtualTour = false,
   className,
 }: PropertyCardProps) {
-  const [currentImage, setCurrentImage] = useState(0)
-  const cardRef = useRef<HTMLDivElement>(null)
-  const activeSectionRef = useRef<"left" | "middle" | "right" | null>(null)
-  const initialMouseEnterRef = useRef(false) // To track the first mouse enter
+  const [currentImage, setCurrentImage] = useState(0);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const activeSectionRef = useRef<"left" | "middle" | "right" | null>(null);
+  const initialMouseEnterRef = useRef(false);
 
   const nextImage = () => {
-    if (images.length <= 1) return
-    setCurrentImage((prev) => (prev === images.length - 1 ? 0 : prev + 1))
-  }
+    if (images.length <= 1) return;
+    setCurrentImage((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  };
 
   const prevImage = () => {
-    if (images.length <= 1) return
-    setCurrentImage((prev) => (prev === 0 ? images.length - 1 : prev - 1))
-  }
+    if (images.length <= 1) return;
+    setCurrentImage((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
 
   const handleMouseEnter = () => {
-    if (images.length <= 1) return
+    if (images.length <= 1) return;
     if (!initialMouseEnterRef.current) {
-      nextImage()
-      initialMouseEnterRef.current = true
+      nextImage();
+      initialMouseEnterRef.current = true;
     }
-  }
+  };
 
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (images.length <= 1) return
+    if (images.length <= 1) return;
 
-    const rect = event.currentTarget.getBoundingClientRect()
-    const x = event.clientX - rect.left
-    const width = rect.width
-    let currentMouseSection: "left" | "middle" | "right"
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const width = rect.width;
+    let currentMouseSection: "left" | "middle" | "right";
 
     if (x < width / 3) {
-      currentMouseSection = "left"
+      currentMouseSection = "left";
     } else if (x < (width * 2) / 3) {
-      currentMouseSection = "middle"
+      currentMouseSection = "middle";
     } else {
-      currentMouseSection = "right"
+      currentMouseSection = "right";
     }
 
     if (currentMouseSection !== activeSectionRef.current) {
       if (currentMouseSection === "left") {
-        prevImage()
+        prevImage();
       } else if (currentMouseSection === "right") {
-        nextImage()
+        nextImage();
       }
-      // No action for "middle" section after the initial state change
-      activeSectionRef.current = currentMouseSection
+      activeSectionRef.current = currentMouseSection;
     }
-  }
+  };
 
   const handleMouseLeave = () => {
-    if (images.length <= 1) return
-    activeSectionRef.current = null
-    initialMouseEnterRef.current = false // Reset for next hover session
-    setCurrentImage(0) // Reset to the first image
-  }
+    if (images.length <= 1) return;
+    activeSectionRef.current = null;
+    initialMouseEnterRef.current = false;
+    setCurrentImage(0);
+  };
 
   return (
     <Card
@@ -99,28 +98,23 @@ export default function PropertyCard({
       className={cn(
         "overflow-hidden transition-all duration-300 hover:shadow-md",
         featured && "border-2",
-        className,
-      )}
-    >
+        className
+      )}>
       <div
         className="relative aspect-[4/3]"
         onMouseEnter={handleMouseEnter}
         onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-      >
+        onMouseLeave={handleMouseLeave}>
         <div className="absolute inset-0">
           <Image
             src={images[currentImage] || "/placeholder.svg"}
             alt={title}
             fill
             className={cn("object-cover transition-all duration-500")}
-            priority={featured} // Consider adding priority for featured card images
+            priority={featured}
           />
         </div>
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-
-        {/* Image Navigation - Removed Arrow Buttons */}
-
         {/* Featured Badge */}
         {featured && (
           <div className="absolute left-2 top-2 rounded-full bg-neutral-900/80 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
@@ -185,5 +179,5 @@ export default function PropertyCard({
         </Button>
       </CardFooter>
     </Card>
-  )
+  );
 }

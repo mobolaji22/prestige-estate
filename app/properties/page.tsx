@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PropertyFilter } from "@/components/property-filter";
 import { Preloader } from "@/components/preloader";
-import { properties as mockProperties, Property } from "@/lib/mock-data"; // Added import
+import { properties as mockProperties, Property } from "@/lib/mock-data";
 
 export default function PropertiesPage() {
   const allProperties = Object.values(mockProperties); // Get all properties from mock data
@@ -29,29 +29,29 @@ export default function PropertiesPage() {
             </Link>
             <nav className="hidden md:flex md:gap-6 lg:gap-10">
               <Link
-                href="#properties"
+                href="/#properties"
                 className="text-sm font-medium transition-colors hover:text-neutral-500 smooth-scroll">
                 Featured
               </Link>
               <Link
-                href="#about"
+                href="/#about"
                 className="text-sm font-medium transition-colors hover:text-neutral-500 smooth-scroll">
                 About
               </Link>
               <Link
-                href="#testimonials"
+                href="/#testimonials"
                 className="text-sm font-medium transition-colors hover:text-neutral-500 smooth-scroll">
                 Testimonials
               </Link>
               <Link
-                href="#contact"
+                href="/#contact"
                 className="text-sm font-medium transition-colors hover:text-neutral-500 smooth-scroll">
                 Contact
               </Link>
             </nav>
             <div className="flex items-center gap-4">
               <Button asChild className="hidden md:block">
-                <Link href="#contact">Book a Consultation</Link>
+                <Link href="/#contact">Book a Consultation</Link>
               </Button>
               <button
                 className="block md:hidden"
@@ -101,30 +101,32 @@ export default function PropertiesPage() {
           </div>
           <nav className="mt-8 flex flex-col space-y-4">
             <Link
-              href="#properties"
-              className="text-lg font-medium transition-colors hover:text-neutral-500 smooth-scroll">
+              href="/#properties"
+              className="text-lg font-medium transition-colors hover:text-neutral-500">
               Featured
             </Link>
             <Link
-              href="#about"
-              className="text-lg font-medium transition-colors hover:text-neutral-500 smooth-scroll">
+              href="/#about"
+              className="text-lg font-medium transition-colors hover:text-neutral-500">
               About
             </Link>
             <Link
-              href="#testimonials"
-              className="text-lg font-medium transition-colors hover:text-neutral-500 smooth-scroll">
+              href="/#testimonials"
+              className="text-lg font-medium transition-colors hover:text-neutral-500">
               Testimonials
             </Link>
             <Link
-              href="#contact"
-              className="text-lg font-medium transition-colors hover:text-neutral-500 smooth-scroll">
+              href="/#contact"
+              className="text-lg font-medium transition-colors hover:text-neutral-500">
               Contact
             </Link>
+            {/* <Button asChild className="hidden md:block"> */}
             <Link
-              href="#contact"
+              href="/#contact"
               className="text-lg font-medium transition-colors hover:text-neutral-500">
               Book a Consultation
             </Link>
+            {/* </Button> */}
           </nav>
         </div>
 
