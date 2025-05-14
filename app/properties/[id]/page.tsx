@@ -30,6 +30,7 @@ export default function PropertyPage({ params }: { params: { id: string } }) {
     <>
       <Preloader />
       <div className="min-h-screen">
+        {/* Header */}
         <header className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md">
           <div className="container flex h-16 items-center justify-between">
             <Link href="/">
@@ -46,29 +47,29 @@ export default function PropertyPage({ params }: { params: { id: string } }) {
             </Link>
             <nav className="hidden md:flex md:gap-6 lg:gap-10">
               <Link
-                href="/#properties"
-                className="text-sm font-medium transition-colors hover:text-neutral-500">
-                Properties
+                href="#properties"
+                className="text-sm font-medium transition-colors hover:text-neutral-500 smooth-scroll">
+                Featured
               </Link>
               <Link
-                href="/#about"
-                className="text-sm font-medium transition-colors hover:text-neutral-500">
+                href="#about"
+                className="text-sm font-medium transition-colors hover:text-neutral-500 smooth-scroll">
                 About
               </Link>
               <Link
-                href="/#testimonials"
-                className="text-sm font-medium transition-colors hover:text-neutral-500">
+                href="#testimonials"
+                className="text-sm font-medium transition-colors hover:text-neutral-500 smooth-scroll">
                 Testimonials
               </Link>
               <Link
-                href="/#contact"
-                className="text-sm font-medium transition-colors hover:text-neutral-500">
+                href="#contact"
+                className="text-sm font-medium transition-colors hover:text-neutral-500 smooth-scroll">
                 Contact
               </Link>
             </nav>
             <div className="flex items-center gap-4">
-              <Button asChild>
-                <Link href="/properties">Back to Properties</Link>
+              <Button asChild className="hidden md:block">
+                <Link href="#contact">Book a Consultation</Link>
               </Button>
               <button
                 className="block md:hidden"
@@ -118,29 +119,29 @@ export default function PropertyPage({ params }: { params: { id: string } }) {
           </div>
           <nav className="mt-8 flex flex-col space-y-4">
             <Link
-              href="/#properties"
-              className="text-lg font-medium transition-colors hover:text-neutral-500">
-              Properties
+              href="#properties"
+              className="text-lg font-medium transition-colors hover:text-neutral-500 smooth-scroll">
+              Featured
             </Link>
             <Link
-              href="/#about"
-              className="text-lg font-medium transition-colors hover:text-neutral-500">
+              href="#about"
+              className="text-lg font-medium transition-colors hover:text-neutral-500 smooth-scroll">
               About
             </Link>
             <Link
-              href="/#testimonials"
-              className="text-lg font-medium transition-colors hover:text-neutral-500">
+              href="#testimonials"
+              className="text-lg font-medium transition-colors hover:text-neutral-500 smooth-scroll">
               Testimonials
             </Link>
             <Link
-              href="/#contact"
-              className="text-lg font-medium transition-colors hover:text-neutral-500">
+              href="#contact"
+              className="text-lg font-medium transition-colors hover:text-neutral-500 smooth-scroll">
               Contact
             </Link>
             <Link
-              href="/properties"
+              href="#contact"
               className="text-lg font-medium transition-colors hover:text-neutral-500">
-              Back to Properties
+              Book a Consultation
             </Link>
           </nav>
         </div>
